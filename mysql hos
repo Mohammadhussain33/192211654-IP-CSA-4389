@@ -1,0 +1,60 @@
+CREATE DATABASE HospitalManagementSystem;
+
+USE HospitalManagementSystem;
+
+-- Table for storing user credentials
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Table for storing patient information
+CREATE TABLE patients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
+    gender ENUM('male', 'female', 'other') NOT NULL,
+    address TEXT NOT NULL
+);
+
+-- Table for storing doctor information
+CREATE TABLE doctors (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    specialty VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Table for storing appointments
+CREATE TABLE appointments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    doctor_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    FOREIGN KEY (doctor_id) REFERENCES doctors(id),
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+);
+
+-- Table for storing billing information
+CREATE TABLE billing (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    amount DECIMAL(10, 2) NOT NULL,
+    payment_method ENUM('credit', 'debit', 'cash') NOT NULL,
+    notes TEXT,
+    patient_id INT NOT NULL,
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+);
+
+-- Table for storing contact messages
+CREATE TABLE contact (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL
+);
+
+-- Insert a sample admin user (password should be hashed in a real application)
+INSERT INTO users (username, password) VALUES ('admin', 'password');
